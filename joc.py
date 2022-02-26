@@ -24,6 +24,7 @@ w=False
 a=False
 s=False
 d=False
+viteza = 0.1
 mancare_spawned = False
 cords_list_m = []
 colors = [[191, 0, 230], [35, 0, 150], [3, 173, 32], [235, 150, 5], [193, 227, 2]]
@@ -39,9 +40,27 @@ def mancare(cate):
 mancare(40)
 while running:
     coordMouseX,coordMouseY = p.mouse.get_pos()
-    print(coordMouseX, coordMouseY)
+    #print(coordMouseX, coordMouseY)
     vecDirectieX = coordMouseX - x
     vecDirectieY = coordMouseY - y
+    unghiRad = m.atan(abs(vecDirectieY/vecDirectieX))
+    unghiGrade = (unghiRad*180)/m.pi
+    if vecDirectieX > 0 and vecDirectieY > 0:
+        unghiFinal = unghiGrade
+    elif vecDirectieX < 0 and vecDirectieY > 0:
+        unghiFinal = -90 + unghiGrade
+    elif vecDirectieX < 0 and vecDirectieY < 0:
+        unghiFinal = 180 + unghiGrade
+    elif vecDirectieX > 0 and vecDirectieY < 0:
+        unghiFinal = -270 + unghiGrade
+    unghiFinal = (unghiFinal * m.pi)/180
+    xtemp = m.sin(unghiFinal)*viteza
+    ytemp = m.cos(unghiFinal)*viteza
+    print(unghiRad)
+    
+    x += xtemp
+    y += ytemp
+    #print(str(unghiRad)+ "   "+str(unghiGrade))
     events = p.event.get()
     for event in events:
         if event.type == p.KEYDOWN:
@@ -92,14 +111,14 @@ while running:
     elif d:
         x+=0.1
 
-    if coordMouseY > y:
-        y=y+0.1
-    else:
-        y=y-0.1
-    if coordMouseX > x:
-        x=x+0.1
-    else:
-        x=x-0.1
+    # if coordMouseY > y:
+    #     y=y+0.1
+    # else:
+    #     y=y-0.1
+    # if coordMouseX > x:
+    #     x=x+0.1
+    # else:
+    #     x=x-0.1
 
 
     if (x_rosu - x)**2 + (y_rosu - y)**2 < rad**2:
